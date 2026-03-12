@@ -1,0 +1,36 @@
+services:
+  endee:
+    image: endeeio/endee-server:latest
+    container_name: endee-server
+    ports:
+      - "8080:8080"
+    ulimits:
+      nofile: 100000
+    environment:
+      NDD_NUM_THREADS: 0
+      NDD_AUTH_TOKEN: "${ENDEE_AUTH_TOKEN:-}"
+    volumes:
+      - endee-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: acemate-app
+    ports:
+      - "8501:8501"
+    environment:
+      SARVAM_API_KEY: "${SARVAM_API_KEY}"
+      ENDEE_URL: "http://endee:8080"
+      ENDEE_AUTH_TOKEN: "${ENDEE_AUTH_TOKEN:-}"
+    depends_on:
+      endee:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  endee-data:

@@ -1,5 +1,5 @@
 streamlit>=1.30.0
-numpy>=1.24.0
+numpy>=1.24.0,<2.0.0
 torch==2.2.2
 transformers>=4.41.0,<4.50.0
 sentence-transformers>=2.2.0,<4.0.0

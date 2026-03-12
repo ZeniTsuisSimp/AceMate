@@ -10,6 +10,7 @@ Provides a 6-page sidebar navigation:
   6. Private Tutor — Subject-scoped chatbot tutor
 """
 
+import os
 import streamlit as st
 import logging
 
@@ -164,6 +165,32 @@ if "chunk_count" not in st.session_state:
     st.session_state.chunk_count = 0
 
 tracker = ScoreTracker()
+
+# ---------------------------------------------------------------------------
+# Endee connectivity check
+# ---------------------------------------------------------------------------
+
+@st.cache_resource(show_spinner=False)
+def _check_endee():
+    import requests as _req
+    url = os.environ.get("ENDEE_URL", "http://localhost:8080").rstrip("/")
+    try:
+        _req.get(f"{url}/health", timeout=5)
+        return True, None
+    except Exception as exc:
+        return False, str(exc)
+
+_endee_ok, _endee_err = _check_endee()
+if not _endee_ok:
+    endee_url = os.environ.get("ENDEE_URL", "http://localhost:8080")
+    st.error(
+        f"⚠️ **Cannot reach the Endee vector database** at `{endee_url}`.\n\n"
+        "**On Railway:** Go to your project → add an Endee service (Docker image: "
+        "`endeeio/endee-server:latest`), then set `ENDEE_URL` in your app's Variables "
+        "to the Endee service's private hostname, e.g. `http://endee.railway.internal:8080`.\n\n"
+        f"Error: `{_endee_err}`"
+    )
+    st.stop()
 
 # ---------------------------------------------------------------------------
 # Sidebar navigation

@@ -44,6 +44,11 @@ def _get_client() -> Endee:
     client = Endee(auth_token) if auth_token else Endee()
 
     base_url = os.getenv("ENDEE_URL", "http://localhost:8080")
+    if not base_url:
+        raise ConnectionError(
+            "ENDEE_URL is not set. Add it to your environment variables. "
+            "On Railway: set ENDEE_URL=http://<endee-service-private-hostname>:8080"
+        )
     # Endee SDK expects the full API path
     if not base_url.endswith("/api/v1"):
         base_url = base_url.rstrip("/") + "/api/v1"

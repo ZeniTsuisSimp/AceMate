@@ -2,17 +2,25 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies required by OpenCV (RapidOCR) and others
+# System dependencies for OpenCV (rapidocr) and general use
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libglib2.0-0 \
         libsm6 \
         libxext6 \
         libxrender1 \
         libgomp1 \
+        libgl1 \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies first (cached layer)
+# Install CPU-only PyTorch FIRST to avoid the 2GB CUDA download
+# sentence-transformers will use this instead of pulling CUDA torch
+RUN pip install --no-cache-dir \
+        torch==2.2.2 \
+        torchvision==0.17.2 \
+        --index-url https://download.pytorch.org/whl/cpu
+
+# Install remaining Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 

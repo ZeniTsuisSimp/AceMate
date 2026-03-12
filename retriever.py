@@ -43,6 +43,25 @@ def _get_client() -> Endee:
     return client
 
 
+def get_index_count() -> int:
+    """Return the number of vectors currently stored in the index, or -1 on error."""
+    try:
+        client = _get_client()
+        index = client.get_index(name=INDEX_NAME)
+        info = index.describe()
+        # Endee describe() returns an object with a count/num_vectors field
+        if hasattr(info, "count"):
+            return int(info.count)
+        if hasattr(info, "num_vectors"):
+            return int(info.num_vectors)
+        if isinstance(info, dict):
+            return int(info.get("count", info.get("num_vectors", 0)))
+        return 0
+    except Exception as exc:
+        logger.warning("Could not get index count: %s", exc)
+        return -1
+
+
 # ---------------------------------------------------------------------------
 # Retrieval functions
 # ---------------------------------------------------------------------------

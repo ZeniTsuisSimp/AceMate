@@ -16,7 +16,7 @@ import logging
 
 from ingest import ingest_documents, clear_index
 from embedder import extract_topics, flatten_topics, parse_pdf, parse_file
-from retriever import retrieve, retrieve_by_topic, retrieve_by_subject
+from retriever import retrieve, retrieve_by_topic, retrieve_by_subject, get_index_count
 from features import answer_question, predict_exam_questions, summarize_topic, generate_mcq, tutor_chat
 from tracker import ScoreTracker
 
@@ -238,6 +238,13 @@ if page == "📤 Upload":
         unsafe_allow_html=True,
     )
 
+    # Show current index status
+    _idx_count = get_index_count()
+    if _idx_count > 0:
+        st.info(f"📦 Endee index currently holds **{_idx_count} vectors** from previous uploads. New uploads will add to these.")
+    elif _idx_count == 0:
+        st.warning("📭 Index is empty — please upload your notes and syllabus below.")
+
     col1, col2 = st.columns(2)
 
     with col1:
@@ -390,6 +397,14 @@ elif page == "❓ Ask from Notes":
         "<p>Ask any question — answers are backed by your uploaded study material.</p></div>",
         unsafe_allow_html=True,
     )
+
+    # Proactive index check
+    _idx_count = get_index_count()
+    if _idx_count == 0:
+        st.error("📭 Your index is empty. Go to **📤 Upload** first and upload your notes.")
+        st.stop()
+    else:
+        st.caption(f"🔍 Searching across {_idx_count} indexed chunks from your notes.")
 
     question = st.text_input(
         "💬 Type your question",

@@ -163,6 +163,8 @@ if "ingested" not in st.session_state:
     st.session_state.ingested = False
 if "chunk_count" not in st.session_state:
     st.session_state.chunk_count = 0
+if "indexed_files" not in st.session_state:
+    st.session_state.indexed_files = []  # list of filenames indexed this session
 
 tracker = ScoreTracker()
 
@@ -216,6 +218,13 @@ with st.sidebar:
         "<small style='color:#6b7280'>Powered by <b>Endee</b> + <b>Sarvam AI</b></small>",
         unsafe_allow_html=True,
     )
+    # Show indexed files for this session
+    indexed = st.session_state.get("indexed_files", [])
+    if indexed:
+        st.markdown("---")
+        st.markdown("<small style='color:#6b7280'><b>📁 Indexed this session:</b></small>", unsafe_allow_html=True)
+        for fname in indexed:
+            st.markdown(f"<small style='color:#9ca3af'>• {fname}</small>", unsafe_allow_html=True)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -331,6 +340,14 @@ if page == "📤 Upload":
                 progress_bar.progress(100, text="✅ Ingestion complete!")
                 st.session_state.ingested = True
                 st.session_state.chunk_count = total_chunks
+
+                # Remember which files were indexed this session
+                if syllabus_file:
+                    if syllabus_file.name not in st.session_state.indexed_files:
+                        st.session_state.indexed_files.append(syllabus_file.name)
+                for f_name, _ in (files_data if notes_files else []):
+                    if f_name not in st.session_state.indexed_files:
+                        st.session_state.indexed_files.append(f_name)
 
                 # Success metrics
                 st.markdown("---")

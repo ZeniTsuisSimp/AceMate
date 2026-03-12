@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install CPU-only PyTorch FIRST to prevent sentence-transformers
 # from pulling the 2GB CUDA build
 RUN pip install --no-cache-dir \
-        torch==2.2.2 \
+        torch==2.4.0 \
         --index-url https://download.pytorch.org/whl/cpu
 
 # Install remaining Python dependencies (torch already present, pip will skip it)

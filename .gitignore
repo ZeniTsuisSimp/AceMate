@@ -37,6 +37,15 @@ Thumbs.db
 uploads/
 *.tmp
 
+# User data & scores (privacy)
+quiz_scores.json
+
+# Generated documentation (local only)
+ONE_PAGER.md
+ONE_PAGER.html
+ONE_PAGER.pdf
+ACEMATE_BRIEF.pdf
+
 # Model cache (large, re-downloaded automatically)
 .cache/
 models/

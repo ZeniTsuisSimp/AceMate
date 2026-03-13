@@ -2,6 +2,8 @@
 
 **AI-Powered Exam Preparation Assistant** — Upload your notes and syllabus, then let AI help you study smarter with Q&A, predicted exam questions, topic summaries, and adaptive MCQ practice.
 
+**[👉 Try Live Demo](https://acemate.dpdns.org/)** 🚀
+
 ---
 
 ## 🧩 Problem Statement

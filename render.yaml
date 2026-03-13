@@ -4,8 +4,7 @@ services:
     env: docker
     dockerfilePath: ./Dockerfile
     envVars:
-      - key:sk_xd67gov7_VQ6TeXiK0zZLxWbTjH8lyvmP
-        sync: false
+      - key: SARVAM_API_KEY
       - key: ENDEE_URL
         value: http://endee-server:8080
 

@@ -265,20 +265,36 @@ def _match_subject(text: str, grouped_topics: Optional[dict[str, list[str]]]) ->
 
 
 def clear_index() -> None:
-    """Delete and recreate the examprep index in Endee."""
+    """Delete all vectors from the examprep index in Endee."""
     try:
         client = _get_client()
+        
+        # Get the index
+        index = client.get_index(name=INDEX_NAME)
+        logger.info("Connected to index '%s'.", INDEX_NAME)
+        
+        # Get all vector IDs and delete them
         try:
-            # Attempt to delete existing index
-            index = client.get_index(name=INDEX_NAME)
+            # Try to delete the entire index first
             index.delete()
             logger.info("Deleted index '%s'.", INDEX_NAME)
-        except Exception:
-            logger.info("Index '%s' does not exist yet.", INDEX_NAME)
-
-        # Recreate fresh
-        _ensure_index(client)
-        logger.info("Index '%s' recreated.", INDEX_NAME)
+            
+            # Recreate empty index
+            _ensure_index(client)
+            logger.info("Index '%s' recreated empty.", INDEX_NAME)
+        except Exception as delete_err:
+            logger.warning("Could not delete index: %s. Trying vector deletion...", delete_err)
+            
+            # Fallback: try to delete all vectors by deleting and recreating
+            try:
+                client.delete_index(name=INDEX_NAME)
+                logger.info("Deleted index via client method")
+                _ensure_index(client)
+                logger.info("Index recreated")
+            except Exception as fallback_err:
+                logger.error("Fallback deletion failed: %s", fallback_err)
+                raise
+                
     except Exception as exc:
         logger.error("Failed to clear index: %s", exc)
         raise ConnectionError(

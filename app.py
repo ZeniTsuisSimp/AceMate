@@ -386,6 +386,27 @@ if page == "📤 Upload":
                 st.error(f"❌ Ingestion failed: {exc}")
                 logger.exception("Ingestion error")
 
+    # Privacy & Security Section
+    st.markdown("---")
+    st.markdown("### 🔒 Privacy & Security")
+    st.warning(
+        "⚠️ **Session Notes:** Your uploaded notes are stored in the shared Endee database. "
+        "They will be visible to the next user unless you clear them. "
+        "Quiz scores are NOT saved (session-only)."
+    )
+
+    col_clear_1, col_clear_2 = st.columns([1, 3])
+    with col_clear_1:
+        if st.button("🗑️ Clear All Notes", use_container_width=True, type="secondary"):
+            with st.spinner("Clearing index…"):
+                try:
+                    clear_index()
+                    st.session_state.indexed_files = []
+                    st.session_state.topics = {}
+                    st.success("✅ All uploaded notes cleared from database!")
+                except Exception as e:
+                    st.error(f"❌ Failed to clear: {e}")
+
 
 # ═══════════════════════════════════════════════════════════════════════════
 # PAGE 2: Ask from Notes

@@ -38,27 +38,16 @@ class ScoreTracker:
     # ------------------------------------------------------------------
 
     def _load(self) -> None:
-        """Load score data from the JSON file."""
-        if os.path.exists(self.filepath):
-            try:
-                with open(self.filepath, "r", encoding="utf-8") as f:
-                    self.data = json.load(f)
-                logger.info("Loaded scores from '%s'.", self.filepath)
-            except (json.JSONDecodeError, IOError) as exc:
-                logger.warning(
-                    "Could not load '%s', starting fresh: %s", self.filepath, exc
-                )
-                self.data = {}
-        else:
-            self.data = {}
+        """Load score data from the JSON file - DISABLED FOR PRIVACY."""
+        # PRIVACY MODE: Don't load previous quiz scores from disk
+        # Start fresh each session
+        self.data = {}
 
     def _save(self) -> None:
-        """Persist score data to the JSON file."""
-        try:
-            with open(self.filepath, "w", encoding="utf-8") as f:
-                json.dump(self.data, f, indent=2, ensure_ascii=False)
-        except IOError as exc:
-            logger.error("Failed to save scores to '%s': %s", self.filepath, exc)
+        """Persist score data to the JSON file - DISABLED FOR PRIVACY."""
+        # PRIVACY MODE: Quiz results are NOT saved to disk
+        # Scores exist only in current session memory
+        pass
 
     # ------------------------------------------------------------------
     # Public API

@@ -199,6 +199,10 @@ The app will open at `http://localhost:8501`.
 
 Navigate to **📤 Upload** in the sidebar. You'll see:
 
+![AceMate Upload Page](docs/images/upload-page.png)
+
+**Features:**
+
 - **📚 Notes Section** — Upload your study materials (PDFs or photos of handwritten/printed notes)
   - Supports multiple files
   - Drag & drop or browse files

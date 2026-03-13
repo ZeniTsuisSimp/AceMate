@@ -196,11 +196,26 @@ The app will open at `http://localhost:8501`.
 ## 🎮 Demo Walkthrough
 
 ### 1️⃣ Upload Notes
-- Navigate to **📤 Upload** in the sidebar
-- Upload your notes PDFs (one or more)
-- Upload your syllabus PDF
-- Click **🚀 Process & Index**
-- Watch the progress bar as chunks are embedded and stored
+
+Navigate to **📤 Upload** in the sidebar. You'll see:
+
+- **📚 Notes Section** — Upload your study materials (PDFs or photos of handwritten/printed notes)
+  - Supports multiple files
+  - Drag & drop or browse files
+  - Limit: 200MB per file
+  
+- **📋 Syllabus Section** — Upload your course syllabus (PDF or image)
+  - Single file upload
+  - Used to extract topics automatically
+  
+- **🚀 Process & Index Button** — Starts the ingestion pipeline
+  - Extracts text from PDFs/images using OCR
+  - Chunks text into 500-1000 token pieces
+  - Converts chunks into 384-dimensional embeddings
+  - Stores vectors in Endee with metadata (file, page range, topic)
+  - Shows progress as chunks are indexed
+
+**Privacy Note:** After uploading, click **"🗑️ Clear All Notes"** at the bottom before leaving to prevent other users from accessing your notes.
 
 ### 2️⃣ Ask Questions
 - Go to **❓ Ask from Notes**

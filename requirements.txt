@@ -8,5 +8,5 @@ requests>=2.31.0
 python-dotenv>=1.0.0
 endee>=0.1.0
 Pillow>=10.0.0
-rapidocr-onnxruntime>=1.4.0
-onnxruntime>=1.19.0
+rapidocr-onnxruntime<=1.2.3
+onnxruntime>=1.16.0

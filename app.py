@@ -271,7 +271,7 @@ if page == "📤 Upload":
     with col_b:
         process_btn = st.button(
             "🚀 Process & Index",
-            use_container_width=True,
+            width="stretch",
             type="primary",
         )
 
@@ -580,7 +580,7 @@ elif page == "📊 Weak Topics":
             for topic, stats in performance.items()
         ])
         df = df.sort_values("Score (%)", ascending=True)
-        st.bar_chart(df.set_index("Topic"), y="Score (%)", use_container_width=True)
+        st.bar_chart(df.set_index("Topic"), y="Score (%)", width="stretch")
 
         # Weak topics list
         weak = tracker.get_weak_topics()

@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: acemate-app
+    env: docker
+    dockerfilePath: ./Dockerfile
+    port: 8501
+    envVars:
+      - key: SARVAM_API_KEY
+        scope: build,runtime
+      - key: ENDEE_URL
+        value: http://endee-server:8080
+        scope: build,runtime
+      - key: ENDEE_AUTH_TOKEN
+        value: ""
+        scope: build,runtime
+    healthCheckPath: /_stcore/health
+    healthCheckStartupFailureThresholdCount: 10
+
+  - type: web
+    name: endee-server
+    env: docker
+    dockerImage: endeeio/endee-server:latest
+    port: 8080
+    envVars:
+      - key: NDD_NUM_THREADS
+        value: "0"
+        scope: runtime
+      - key: NDD_AUTH_TOKEN
+        value: ""
+        scope: runtime
+    healthCheckPath: /health
+    healthCheckStartupFailureThresholdCount: 10
+    disk:
+      name: endee-data
+      mountPath: /data
+      sizeGB: 10

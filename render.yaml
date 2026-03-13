@@ -5,7 +5,7 @@ services:
     dockerfilePath: ./Dockerfile
     port: 8501
     envVars:
-      - key: SARVAM_API_KEY
+      - key: sk_xd67gov7_VQ6TeXiK0zZLxWbTjH8lyvmP
         scope: build,runtime
       - key: ENDEE_URL
         value: http://endee-server:8080
